@@ -13,27 +13,51 @@ const socialLinks: {
 	name: string;
 }[] = [
 	{
+		friendlyName: "Google Scholar",
+		link: "https://scholar.google.com/citations?user=Z5iuT98AAAAJ&hl=en",
+		name: "academicons:google-scholar",
+	},
+	{
 		friendlyName: "Github",
-		link: "https://github.com/chrismwilliams/astro-cactus",
+		link: "https://github.com/moritzertelt",
 		name: "mdi:github",
+	},
+	{
+		friendlyName: "LinkedIn",
+		link: "https://www.linkedin.com/in/m-ertelt/",
+		name: "mdi:linkedin",
+	},
+	{
+		friendlyName: "Twitter",
+		link: "https://x.com/ErteltMoritz",
+		name: "mdi:twitter",
+	},
+	{
+		friendlyName: "Bluesky",
+		link: "https://bsky.app/profile/moritzertelt.bsky.social",
+		name: "simple-icons:bluesky",
+	},
+	{
+		friendlyName: "Email",
+		link: "mailto:moritz.ertelt@gmail.com",
+		name: "mdi:email",
 	},
 ];
 ---
 
-<div class="flex flex-wrap items-end gap-x-2">
-	<p>Find me on</p>
-	<ul class="flex flex-1 items-center gap-x-2 sm:flex-initial">
+<div class="flex flex-wrap items-center gap-x-4">
+	<ul class="flex flex-1 items-center gap-x-4 sm:flex-initial">
 		{
 			socialLinks.map(({ friendlyName, isWebmention, link, name }) => (
 				<li class="flex">
 					<a
-						class="hover:text-link inline-block"
+						class="hover:text-link inline-flex items-center gap-x-2"
 						href={link}
 						rel={`noreferrer ${isWebmention ? "me authn" : ""}`}
 						target="_blank"
 					>
-						<Icon aria-hidden="true" class="h-8 w-8" focusable="false" name={name} />
-						<span class="sr-only">{friendlyName}</span>
+						<Icon aria-hidden="true" class="h-6 w-6" focusable="false" name={name} />
+						<span>{friendlyName}</span>
 					</a>
 				</li>
 			))

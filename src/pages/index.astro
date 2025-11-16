@@ -1,79 +1,186 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+import { Image } from "astro:assets";
 import SocialList from "@/components/SocialList.astro";
-import PostPreview from "@/components/blog/PostPreview.astro";
-import Note from "@/components/note/Note.astro";
-import { getAllPosts } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
-import { collectionDateSort } from "@/utils/date";
-
-// Posts
-const MAX_POSTS = 10;
-const allPosts = await getAllPosts();
-const allPostsByDate = allPosts
-	.sort(collectionDateSort)
-	.slice(0, MAX_POSTS) as CollectionEntry<"post">[];
-
-// Pinned Posts, set to a max of 3;
-const MAX_PINNED_POSTS = 3;
-const pinnedPosts = allPostsByDate.filter((p) => p.data.pinned).slice(0, MAX_PINNED_POSTS);
-
-// Notes
-const MAX_NOTES = 5;
-const allNotes = await getCollection("note");
-const latestNotes = allNotes.sort(collectionDateSort).slice(0, MAX_NOTES);
+import profilePic from "@/assets/profile-pic.jpg";
 ---
 
 <PageLayout meta={{ title: "Home" }}>
-	<section>
-		<h1 class="title mb-12">Hello World!</h1>
-		<p class="mb-4">
-			Hi, I’m a theme for Astro, a simple starter that you can use to create your website or blog.
-			If you want to know more about how you can customise me, add more posts, and make it your own,
-			click on the GitHub icon link below and it will take you to my repo.
-		</p>
+	<section class="flex flex-col items-center sm:flex-row">
+		<Image
+			src={profilePic}
+			alt="Moritz Ertelt"
+			class="mb-8 h-48 w-48 flex-shrink-0 rounded-full object-cover sm:mr-8 sm:mb-0"
+		/>
+		<div>
+			<!-- <h1 class="title mb-2 text-4xl">Hi there!</h1> -->
+			<p class="text-justify text-lg">
+				Hi I'm Moritz, a computational biologist designing proteins.<br />
+				<br />
+				I am currently a postdoctoral researcher at <a
+					href="https://www.itmp.fraunhofer.de/en/institute/locations.html#cop_21365571754_copy_c_637851265"
+					class="cactus-link"
+					target="_blank">Fraunhofer ITMP-IIP</a
+				> where I design proteins as diagnostics or therapeutics targeting infectious diseases.<br
+				/>
+				<br />
+				Previously, I developed new methods for protein design and engineered proteins for gene and cell
+				therapies.
+			</p>
+		</div>
+	</section>
+	<div class="mt-8">
 		<SocialList />
+	</div>
+	<section id="papers" class="mt-16">
+		<h2 class="title mb-6 text-2xl font-semibold">Papers</h2>
+		<div class="prose max-w-none">
+			<h3 class="mb-4 text-xl font-semibold">Protein design method development</h3>
+			<ul class="list-disc space-y-6 ps-6">
+				<li>
+					<p class="font-bold">
+						HyperMPNN–A general strategy to design thermostable proteins learned from
+						hyperthermophiles.
+					</p>
+					<p>
+						Ertelt, M., Schlegel, P., Beining, M., Kaysser, L., Meiler, J. and Schoeder, C.T., 2024.
+						bioRxiv.
+					</p>
+				</li>
+				<li>
+					<p class="font-bold">
+						Self-supervised machine learning methods for protein design improve sampling but not the
+						identification of high-fitness variants.
+					</p>
+					<p>
+						Ertelt, M., Moretti, R., Meiler, J. and Schoeder, C.T., 2025. Science Advances, 11(7),
+						p.eadr7338.
+					</p>
+				</li>
+				<li>
+					<p class="font-bold">
+						Combining Rosetta sequence design with protein language model predictions using
+						evolutionary scale modeling (ESM) as restraint.
+					</p>
+					<p>
+						Ertelt, M., Meiler, J. and Schoeder, C.T., 2024. ACS synthetic biology, 13(4),
+						pp.1085-1092.
+					</p>
+				</li>
+				<li>
+					<p class="font-bold">
+						Combining machine learning with structure-based protein design to predict and engineer
+						post-translational modifications of proteins.
+					</p>
+					<p>
+						Ertelt, M., Mulligan, V.K., Maguire, J.B., Lyskov, S., Moretti, R., Schiffner, T.,
+						Meiler, J. and Schoeder, C.T., 2024. PLOS Computational Biology, 20(3), p.e1011939.
+					</p>
+				</li>
+				<li>
+					<p class="font-bold">
+						Rosetta design with co-evolutionary information retains protein function.
+					</p>
+					<p>
+						Schmitz, S., Ertelt, M., Merkl, R. and Meiler, J., 2021. PLoS Computational Biology,
+						17(1), p.e1008568.
+					</p>
+				</li>
+			</ul>
+			<h3 class="mt-8 mb-4 text-xl font-semibold">Adeno-associated virus vector engineering</h3>
+			<ul class="list-disc space-y-6 ps-6">
+				<li>
+					<p class="font-bold">
+						Adeno‐associated virus serotype 2 capsid variants for improved liver‐directed gene
+						therapy.
+					</p>
+					<p>
+						Meumann, N., Cabanes‐Creus, M., Ertelt, M., Navarro, R.G., Lucifora, J., Yuan, Q.,
+						Nien‐Huber, K., Abdelrahman, A., Vu, X.K., Zhang, L. and Franke, A.C., 2023. Hepatology,
+						77(3), pp.802-815.
+					</p>
+				</li>
+				<li>
+					<p class="font-bold">
+						Modifying immune responses to adeno-associated virus vectors by capsid engineering.
+					</p>
+					<p>
+						Bentler, M., Hardet, R., Ertelt, M., Rudolf, D., Kaniowska, D., Schneider, A., Vondran,
+						F.W., Schoeder, C.T., Delphin, M., Lucifora, J. and Ott, M., 2023. Molecular therapy
+						Methods & clinical development, 30, pp.576-592.
+					</p>
+				</li>
+			</ul>
+			<h3 class="mt-8 mb-4 text-xl font-semibold">CAR T cell engineering</h3>
+			<ul class="list-disc space-y-6 ps-6">
+				<li>
+					<p class="font-bold">
+						Integrating binding affinity and tonic signaling enables a rational CAR design for
+						augmented T cell function.
+					</p>
+					<p>
+						Barden, M., Elsenbroich, P.R., Haas, V., Ertelt, M., Pervan, P., Velas, L., Gergely, B.,
+						Szöőr, Á., Harrer, D.C., Bezler, V. and Holzinger, A., 2024. Journal for ImmunoTherapy
+						of Cancer, 12(12), p.e010208.
+					</p>
+				</li>
+			</ul>
+		</div>
 	</section>
-	{
-		pinnedPosts.length > 0 && (
-			<section class="mt-16">
-				<h2 class="title mb-6 text-xl">Pinned Posts</h2>
-				<ul class="space-y-4" role="list">
-					{pinnedPosts.map((p) => (
-						<li class="grid gap-1 sm:grid-cols-[auto_1fr]">
-							<PostPreview post={p} />
-						</li>
-					))}
-				</ul>
-			</section>
-		)
-	}
-	<section class="mt-16">
-		<h2 class="title text-accent mb-6 text-xl"><a href="/posts/">Posts</a></h2>
-		<ul class="space-y-4" role="list">
-			{
-				allPostsByDate.map((p) => (
-					<li class="grid gap-1 sm:grid-cols-[auto_1fr]">
-						<PostPreview post={p} />
-					</li>
-				))
-			}
-		</ul>
+	<section id="cv" class="mt-16">
+		<h2 class="title mb-6 text-2xl font-semibold">CV</h2>
+		<div class="border-accent relative border-l-2 pl-8">
+			<div class="space-y-8">
+				<div class="relative">
+					<div class="bg-accent absolute top-1.5 -left-10.25 h-4 w-4 rounded-full"></div>
+					<div>
+						<h3 class="text-lg font-semibold">Postdoctoral researcher</h3>
+						<p class="text-sm text-gray-600 dark:text-gray-400">2025 – now</p>
+						<p class="text-sm">
+							Fraunhofer Institute for Translational Medicine and Pharmacology ITMP; Immunology,
+							Infection and Pandemic Research, Munich/Penzberg
+						</p>
+					</div>
+				</div>
+				<div class="relative">
+					<div class="bg-accent absolute top-1.5 -left-10.25 h-4 w-4 rounded-full"></div>
+					<div>
+						<h3 class="text-lg font-semibold">PhD (Dr. rer. nat.)</h3>
+						<p class="text-sm text-gray-600 dark:text-gray-400">2020 – 2024</p>
+						<p class="text-sm">
+							Meiler/Schoeder Lab -Institute for Drug Discovery & ScaDS.AI, Leipzig University
+						</p>
+					</div>
+				</div>
+				<div class="relative">
+					<div class="bg-accent absolute top-1.5 -left-10.25 h-4 w-4 rounded-full"></div>
+					<div>
+						<h3 class="text-lg font-semibold">Master Thesis</h3>
+						<p class="text-sm text-gray-600 dark:text-gray-400">2019 – 2020 (6 months)</p>
+						<p class="text-sm">MeilerLab - Vanderbilt University (Nashville, USA)</p>
+					</div>
+				</div>
+				<div class="relative">
+					<div class="bg-accent absolute top-1.5 -left-10.25 h-4 w-4 rounded-full"></div>
+					<div>
+						<h3 class="text-lg font-semibold">M.Sc. Biology</h3>
+						<p class="text-sm text-gray-600 dark:text-gray-400">2018 – 2020</p>
+						<p class="text-sm">
+							University of Regensburg, Faculty for Biology and Preclinical Medicine
+						</p>
+					</div>
+				</div>
+				<div class="relative">
+					<div class="bg-accent absolute top-1.5 -left-10.25 h-4 w-4 rounded-full"></div>
+					<div>
+						<h3 class="text-lg font-semibold">B.Sc. Biology</h3>
+						<p class="text-sm text-gray-600 dark:text-gray-400">2015 – 2018</p>
+						<p class="text-sm">
+							University of Regensburg, Faculty for Biology and Preclinical Medicine
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</section>
-	{
-		latestNotes.length > 0 && (
-			<section class="mt-16">
-				<h2 class="title text-accent mb-6 text-xl">
-					<a href="/notes/">Notes</a>
-				</h2>
-				<ul class="space-y-6" role="list">
-					{latestNotes.map((note) => (
-						<li>
-							<Note note={note} as="h3" isPreview />
-						</li>
-					))}
-				</ul>
-			</section>
-		)
-	}
 </PageLayout>
