@@ -1,10 +1,8 @@
 import fs from "node:fs";
 // Rehype plugins
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
-import mdx from "@astrojs/mdx";
-import sitemap from "@astrojs/sitemap";
 import tailwind from "@tailwindcss/vite";
-import { defineConfig, envField } from "astro/config";
+import { defineConfig } from "astro/config";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
@@ -22,39 +20,17 @@ import { expressiveCodeOptions, siteConfig } from "./src/site.config";
 // https://astro.build/config
 export default defineConfig({
 	site: siteConfig.url,
-	image: {
-		domains: ["webmention.io"],
-	},
 	integrations: [
 		expressiveCode(expressiveCodeOptions),
 		icon(),
-		sitemap(),
-		mdx(),
 		robotsTxt(),
 		webmanifest({
 			// See: https://github.com/alextim/astro-lib/blob/main/packages/astro-webmanifest/README.md
 			name: siteConfig.title,
-			short_name: "Astro_Cactus", // optional
+			short_name: siteConfig.title, // optional
 			description: siteConfig.description,
 			lang: siteConfig.lang,
-			icon: "public/icon.svg", // the source for generating favicon & icons
-			icons: [
-				{
-					src: "icons/apple-touch-icon.png", // used in src/components/BaseHead.astro L:26
-					sizes: "180x180",
-					type: "image/png",
-				},
-				{
-					src: "icons/icon-192.png",
-					sizes: "192x192",
-					type: "image/png",
-				},
-				{
-					src: "icons/icon-512.png",
-					sizes: "512x512",
-					type: "image/png",
-				},
-			],
+			icons: [],
 			start_url: "/",
 			background_color: "#1d1f21",
 			theme_color: "#2bbc8a",
@@ -91,13 +67,6 @@ export default defineConfig({
 			exclude: ["@resvg/resvg-js"],
 		},
 		plugins: [tailwind(), rawFonts([".ttf", ".woff"])],
-	},
-	env: {
-		schema: {
-			WEBMENTION_API_KEY: envField.string({ context: "server", access: "secret", optional: true }),
-			WEBMENTION_URL: envField.string({ context: "client", access: "public", optional: true }),
-			WEBMENTION_PINGBACK: envField.string({ context: "client", access: "public", optional: true }),
-		},
 	},
 });
 
