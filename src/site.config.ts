@@ -2,7 +2,7 @@ import type { SiteConfig } from "@/types";
 import type { AstroExpressiveCodeOptions } from "astro-expressive-code";
 
 export const siteConfig: SiteConfig = {
-	// Used as both a meta property (src/components/BaseHead.astro L:31 + L:49) & the generated satori png (src/pages/og-image/[slug].png.ts)
+	// Used as both a meta property (src/components/BaseHead.astro L:31 + L:49)
 	author: "Moritz Ertelt",
 	// Date.prototype.toLocaleDateString() parameters, found in src/utils/date.ts.
 	date: {
@@ -58,7 +58,7 @@ export const expressiveCodeOptions: AstroExpressiveCodeOptions = {
 	},
 	themeCssSelector(theme, { styleVariants }) {
 		// If one dark and one light theme are available
-		// generate theme CSS selectors compatible with cactus-theme dark mode switch
+		// generate theme CSS selectors compatible with our dark mode switch
 		if (styleVariants.length >= 2) {
 			const baseTheme = styleVariants[0]?.theme;
 			const altTheme = styleVariants.find((v) => v.theme.type !== baseTheme?.type)?.theme;
