@@ -1,2 +1,2 @@
 # Website
-Personal website
+Personal website at https://moritzertelt.github.io/
