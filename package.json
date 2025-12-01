@@ -14,7 +14,7 @@
 		"check": "astro check"
 	},
 	"dependencies": {
-		"@astrojs/markdown-remark": "^6.3.8",
+		"@astrojs/markdown-remark": "^6.3.9",
 		"@tailwindcss/vite": "4.1.17",
 		"astro": "5.14.8",
 		"astro-expressive-code": "^0.41.3",
