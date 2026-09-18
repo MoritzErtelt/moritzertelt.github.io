@@ -5,11 +5,12 @@ import "@/styles/global.css";
 
 type Props = SiteMeta;
 
-const { articleDate, description, title } = Astro.props;
+const { articleDate, description, ogImage, title } = Astro.props;
 
 const titleSeparator = "•";
 const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 ---
 
 <meta charset="utf-8" />
@@ -17,8 +18,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <title>{siteTitle}</title>
 
 {/* Icons */}
-<link rel="icon" href="/top7.png" type="image/png" sizes="any" />
-<link rel="apple-touch-icon" href="/top7.png" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
 {
 	import.meta.env.PROD && (
 		<>
@@ -44,6 +47,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta content={siteConfig.title} property="og:site_name" />
 <meta content={siteConfig.ogLocale} property="og:locale" />
 {
+	ogImageURL && (
+		<>
+			<meta content={ogImageURL} property="og:image" />
+			<meta content={siteTitle} property="og:image:alt" />
+		</>
+	)
+}
+{
 	articleDate && (
 		<>
 			<meta content={siteConfig.author} property="article:author" />
@@ -53,9 +64,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 }
 
 {/* Twitter */}
-<meta content="summary_large_image" property="twitter:card" />
-<meta content={canonicalURL} property="twitter:url" />
-<meta content={title} property="twitter:title" />
-<meta content={description} property="twitter:description" />
+<meta content="summary_large_image" name="twitter:card" />
+<meta content={canonicalURL} name="twitter:url" />
+<meta content={title} name="twitter:title" />
+<meta content={description} name="twitter:description" />
+{ogImageURL && <meta content={ogImageURL} name="twitter:image" />}
 
 <meta content={Astro.generator} name="generator" />

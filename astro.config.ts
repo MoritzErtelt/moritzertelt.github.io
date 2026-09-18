@@ -29,7 +29,18 @@ export default defineConfig({
 			short_name: siteConfig.title, // optional
 			description: siteConfig.description,
 			lang: siteConfig.lang,
-			icons: [],
+			icons: [
+				{
+					src: "/android-chrome-192x192.png",
+					sizes: "192x192",
+					type: "image/png",
+				},
+				{
+					src: "/android-chrome-512x512.png",
+					sizes: "512x512",
+					type: "image/png",
+				},
+			],
 			start_url: "/",
 			background_color: "#1d1f21",
 			theme_color: "#2bbc8a",

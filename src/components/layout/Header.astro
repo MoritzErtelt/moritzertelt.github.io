@@ -42,8 +42,8 @@ import logo from "@/assets/top7.png";
 		<ThemeToggle />
 		<mobile-button>
 			<button
+				aria-controls="navigation-menu"
 				aria-expanded="false"
-				aria-haspopup="menu"
 				class="group relative ms-4 h-7 w-7 sm:invisible sm:hidden"
 				id="toggle-navigation-menu"
 				type="button"
@@ -66,7 +66,6 @@ import logo from "@/assets/top7.png";
 				<svg
 					aria-hidden="true"
 					class="text-accent absolute start-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100"
-					class="text-accent"
 					fill="none"
 					focusable="false"
 					id="cross-svg"
@@ -83,20 +82,51 @@ import logo from "@/assets/top7.png";
 </header>
 
 <script>
-	import { toggleClass } from "@/utils/domElement";
-
 	class MobileNavBtn extends HTMLElement {
 		#menuOpen: boolean = false;
+		#headerEl: HTMLElement | null = null;
+		#menuEl: HTMLElement | null = null;
+		#mobileButtonEl: HTMLButtonElement | null = null;
+		#mobileButtonLabel: HTMLElement | null = null;
+
+		#handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape" && this.#menuOpen) {
+				event.preventDefault();
+				this.setMenuState(false);
+			}
+		};
 
 		connectedCallback() {
-			const headerEl = document.getElementById("main-header")!;
-			const mobileButtonEl = this.querySelector<HTMLButtonElement>("button");
+			this.#headerEl = document.getElementById("main-header");
+			this.#menuEl = document.getElementById("navigation-menu");
+			this.#mobileButtonEl = this.querySelector<HTMLButtonElement>("button");
+			this.#mobileButtonLabel = this.querySelector<HTMLElement>(".sr-only");
 
-			mobileButtonEl?.addEventListener("click", () => {
-				if (headerEl) toggleClass(headerEl, "menu-open");
-				this.#menuOpen = !this.#menuOpen;
-				mobileButtonEl.setAttribute("aria-expanded", this.#menuOpen.toString());
-			});
+			this.#mobileButtonEl?.addEventListener("click", () => this.setMenuState(!this.#menuOpen));
+			document.addEventListener("keydown", this.#handleKeyDown);
+		}
+
+		disconnectedCallback() {
+			document.removeEventListener("keydown", this.#handleKeyDown);
+		}
+
+		setMenuState(open: boolean) {
+			if (!this.#headerEl || !this.#mobileButtonEl) return;
+
+			if (open === this.#menuOpen) return;
+
+			this.#headerEl.classList.toggle("menu-open", open);
+			this.#menuOpen = open;
+			this.#mobileButtonEl.setAttribute("aria-expanded", String(open));
+			if (this.#mobileButtonLabel) {
+				this.#mobileButtonLabel.textContent = open ? "Close main menu" : "Open main menu";
+			}
+
+			if (open) {
+				this.#menuEl?.querySelector<HTMLAnchorElement>("a")?.focus();
+			} else {
+				this.#mobileButtonEl.focus();
+			}
 		}
 	}
 

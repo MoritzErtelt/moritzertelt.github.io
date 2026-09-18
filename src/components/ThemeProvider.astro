@@ -2,12 +2,16 @@
 <script is:inline>
 	const lightModePref = window.matchMedia("(prefers-color-scheme: light)");
 
-	function getUserPref() {
+	function getStoredTheme() {
 		const storedTheme = typeof localStorage !== "undefined" && localStorage.getItem("theme");
-		return storedTheme || "light";
+		return storedTheme === "light" || storedTheme === "dark" ? storedTheme : null;
 	}
 
-	function setTheme(newTheme) {
+	function getPreferredTheme() {
+		return getStoredTheme() ?? (lightModePref.matches ? "light" : "dark");
+	}
+
+	function setTheme(newTheme, persist = false) {
 		if (newTheme !== "light" && newTheme !== "dark") {
 			return console.warn(
 				`Invalid theme value '${newTheme}' received. Expected 'light' or 'dark'.`,
@@ -16,29 +20,28 @@
 
 		const root = document.documentElement;
 
-		// root already set to newTheme, exit early
-		if (newTheme === root.getAttribute("data-theme")) {
-			return;
+		if (newTheme !== root.getAttribute("data-theme")) {
+			root.setAttribute("data-theme", newTheme);
 		}
 
-		root.setAttribute("data-theme", newTheme);
-
-		if (typeof localStorage !== "undefined") {
+		if (persist && typeof localStorage !== "undefined") {
 			localStorage.setItem("theme", newTheme);
 		}
 	}
 
 	// initial setup
-	setTheme(getUserPref());
+	setTheme(getPreferredTheme());
 
 	// View Transitions hook to restore theme
-	document.addEventListener("astro:after-swap", () => setTheme(getUserPref()));
+	document.addEventListener("astro:after-swap", () => setTheme(getPreferredTheme()));
 
 	// listen for theme-change custom event, fired in src/components/ThemeToggle.astro
 	document.addEventListener("theme-change", (e) => {
-		setTheme(e.detail.theme);
+		if (e instanceof CustomEvent) setTheme(e.detail.theme, true);
 	});
 
-	// listen for prefers-color-scheme change.
-	lightModePref.addEventListener("change", (e) => setTheme(e.matches ? "light" : "dark"));
+	// Follow system preference changes only until the user chooses a theme explicitly.
+	lightModePref.addEventListener("change", () => {
+		if (!getStoredTheme()) setTheme(getPreferredTheme());
+	});
 </script>
